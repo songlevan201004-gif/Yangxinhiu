@@ -1,0 +1,162 @@
+.universe-scene {
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(37, 8, 57, .16), transparent 48%),
+    radial-gradient(ellipse at 14% 28%, rgba(9, 38, 75, .13), transparent 28%);
+  perspective: 940px;
+  cursor: grab;
+}
+
+.universe-scene:active { cursor: grabbing; }
+
+.space-haze {
+  position: absolute;
+  inset: -30%;
+  pointer-events: none;
+  opacity: .26;
+  background:
+    radial-gradient(ellipse at 50% 48%, rgba(255, 78, 190, .14), transparent 25%),
+    radial-gradient(ellipse at 32% 62%, rgba(97, 203, 255, .08), transparent 22%);
+  filter: blur(24px);
+  animation: hazeTurn 18s linear infinite;
+}
+
+.space-viewport {
+  position: absolute;
+  inset: 0;
+  perspective: 900px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+.space-world {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.space-item {
+  --x: 0vw;
+  --y: 0vh;
+  --z: 0px;
+  --r: 0deg;
+  --float-x: 18px;
+  --float-y: -22px;
+  --dur: 6s;
+  --delay: 0s;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+  transform: translate3d(var(--x), var(--y), var(--z)) rotateZ(var(--r));
+  pointer-events: none;
+}
+
+.space-content {
+  display: block;
+  will-change: transform;
+  animation: itemFloat var(--dur) ease-in-out var(--delay) infinite alternate;
+}
+
+.space-message {
+  width: max-content;
+  max-width: 72vw;
+  color: var(--color, #ffd5f2);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: var(--size, 18px);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow:
+    0 0 3px currentColor,
+    0 0 9px currentColor,
+    0 0 20px color-mix(in srgb, currentColor 64%, transparent),
+    0 0 35px rgba(255, 88, 191, .32);
+  opacity: var(--opacity, .92);
+}
+
+.space-heart {
+  position: relative;
+  color: #ff3a16;
+  font-size: var(--size, 42px);
+  line-height: .86;
+  filter: drop-shadow(0 0 5px #ff3717) drop-shadow(0 0 16px rgba(255, 48, 12, .82));
+  animation-name: itemFloat, heartBeat;
+  animation-duration: var(--dur), 1.4s;
+  animation-timing-function: ease-in-out, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-direction: alternate, alternate;
+}
+
+.space-symbol {
+  font-size: var(--size, 38px);
+  line-height: 1;
+  filter: drop-shadow(0 0 8px rgba(255, 119, 63, .75));
+}
+
+.space-photo {
+  width: var(--photo-size, 90px);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 2px solid rgba(255, 125, 202, .72);
+  border-radius: 4px;
+  background: #130711;
+  box-shadow: 0 0 10px #ff4eb2, 0 0 28px rgba(255, 48, 159, .38);
+}
+
+.space-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.universe-guide {
+  position: fixed;
+  z-index: 45;
+  left: 50%;
+  bottom: var(--safe-bottom);
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 82vw;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: rgba(255,255,255,.72);
+  background: rgba(7, 3, 12, .48);
+  font-size: 12px;
+  letter-spacing: .02em;
+  text-align: center;
+  backdrop-filter: blur(9px);
+  pointer-events: none;
+  animation: guideFade 6s ease forwards;
+}
+
+.heart-burst {
+  position: fixed;
+  z-index: 42;
+  left: var(--bx);
+  top: var(--by);
+  color: #ff3921;
+  font-size: var(--bs);
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px #ff5633);
+  animation: burstFly 1.45s cubic-bezier(.2,.7,.3,1) forwards;
+}
+
+@keyframes itemFloat {
+  from { transform: translate3d(calc(var(--float-x) * -.55), calc(var(--float-y) * -.45), -8px) rotateZ(-1.5deg); }
+  to { transform: translate3d(var(--float-x), var(--float-y), 20px) rotateZ(1.8deg); }
+}
+
+@keyframes heartBeat { to { scale: 1.17; } }
+@keyframes hazeTurn { to { transform: rotate(360deg) scale(1.08); } }
+@keyframes guideFade { 0%, 68% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes burstFly { to { transform: translate3d(var(--dx), var(--dy), 0) rotate(var(--turn)); opacity: 0; } }
+
+@media (max-width: 520px) {
+  .space-message { max-width: 86vw; }
+}

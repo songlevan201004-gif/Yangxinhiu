@@ -1,0 +1,303 @@
+.final-scene {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  perspective: 1100px;
+  touch-action: none;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 16%,
+      rgba(255, 47, 151, 0.16) 0%,
+      rgba(94, 17, 67, 0.08) 29%,
+      transparent 51%
+    ),
+    radial-gradient(
+      ellipse at 50% 43%,
+      rgba(101, 19, 70, 0.12),
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      #160512 0%,
+      #0c0309 36%,
+      #030103 51%,
+      #000000 62%,
+      #000000 100%
+    );
+}
+
+/* Ánh sáng môi trường rất nhẹ */
+
+.final-scene::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: -20%;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 22% 25%,
+      rgba(255, 183, 98, 0.055),
+      transparent 19%
+    ),
+    radial-gradient(
+      circle at 78% 19%,
+      rgba(255, 58, 157, 0.07),
+      transparent 23%
+    );
+
+  filter: blur(28px);
+  animation:
+    finalAmbientGlow
+    5s
+    ease-in-out
+    infinite alternate;
+}
+
+/* Viền tối giúp tập trung vào tim và ảnh */
+
+.final-scene::after {
+  content: "";
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 56%,
+      rgba(0, 0, 0, 0.18) 79%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+}
+
+.final-canvas {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  filter:
+    saturate(1.14)
+    brightness(1.06);
+}
+
+/*
+ * Ảnh không còn khung chữ nhật.
+ * Nền đen trong ảnh được hòa với nền trang.
+ */
+
+.final-photo-shell {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: -1%;
+
+  width: min(92vw, 430px);
+  height: 58%;
+
+  transform:
+    translate3d(-50%, 0, 0);
+
+  transform-origin: center 72%;
+  transform-style: preserve-3d;
+  will-change: transform;
+
+  animation:
+    finalPhotoReveal
+    950ms
+    cubic-bezier(0.2, 0.82, 0.2, 1)
+    both;
+}
+
+/* Hào quang nhẹ phía sau hai người */
+
+.final-photo-shell::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+
+  left: 8%;
+  right: 8%;
+  top: 5%;
+  height: 60%;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255, 62, 161, 0.12),
+      transparent 67%
+    );
+
+  filter: blur(28px);
+  pointer-events: none;
+}
+
+.final-photo-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+/*
+ * Chế độ screen làm vùng màu đen trong ảnh
+ * hòa vào nền, nhưng vẫn giữ da và quần áo rõ.
+ */
+
+.final-photo-frame img {
+  position: absolute;
+  z-index: 1;
+
+  left: 50%;
+  bottom: 0;
+
+  width: 96%;
+  height: 96%;
+
+  display: block;
+  object-fit: contain;
+  object-position: center bottom;
+
+  transform:
+    translateX(-50%)
+    scale(0.985);
+
+  transform-origin: center bottom;
+  mix-blend-mode: screen;
+
+  filter:
+    brightness(1.015)
+    contrast(1.075)
+    saturate(1.035);
+
+  image-rendering: auto;
+  backface-visibility: hidden;
+  user-select: none;
+}
+
+/*
+ * Làm mềm mép trên, tránh thấy đường cắt
+ * của ảnh ngay bên dưới trái tim.
+ */
+
+.final-photo-frame::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.72) 0%,
+      rgba(0, 0, 0, 0.16) 5%,
+      transparent 12%
+    ),
+    linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.42) 0%,
+      transparent 9%,
+      transparent 91%,
+      rgba(0, 0, 0, 0.42) 100%
+    );
+
+  mix-blend-mode: multiply;
+}
+
+/* Không hiện chữ hoặc nút ở giao diện cuối */
+
+.final-scene .final-caption,
+.final-scene .final-home,
+.final-scene .final-nebula {
+  display: none !important;
+}
+
+@keyframes finalPhotoReveal {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes finalAmbientGlow {
+  from {
+    opacity: 0.62;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@media (max-height: 700px) {
+  .final-photo-shell {
+    width: min(86vw, 360px);
+    height: 57%;
+  }
+}
+
+@media (min-width: 700px) {
+  .final-photo-shell {
+    width: min(66vw, 430px);
+  }
+}
+
+/*
+ * Trên điện thoại, khung phải có đúng tỉ lệ vuông của ảnh gốc.
+ * Nếu dùng chiều cao theo viewport, ảnh vuông bị dồn xuống đáy
+ * và tạo một khoảng đen lớn giữa trái tim với hai người.
+ */
+@media (max-width: 699px) {
+  .final-photo-shell {
+    bottom: -1px;
+    width: min(96vw, 470px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    transform-origin: center bottom;
+  }
+
+  .final-photo-frame img {
+    width: 100%;
+    height: 100%;
+    transform: translateX(-50%);
+  }
+
+  .final-photo-frame::after {
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.34) 0%,
+        transparent 7%
+      ),
+      linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.32) 0%,
+        transparent 7%,
+        transparent 93%,
+        rgba(0, 0, 0, 0.32) 100%
+      );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .final-scene::before,
+  .final-photo-shell {
+    animation: none;
+  }
+}
