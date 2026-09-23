@@ -160,3 +160,35 @@
 @media (max-width: 520px) {
   .space-message { max-width: 86vw; }
 }
+
+
+/* FIX_PHOTO_CARDS_V10 */
+/* Force every floating memory/photo card to be completely filled by its image.
+   This removes the gray area visible when an image keeps its intrinsic height. */
+.photo-card,
+.memory-card,
+.floating-photo,
+[class*="photo-card"],
+[class*="memory-card"],
+[class*="floating-photo"] {
+  overflow: hidden !important;
+  background: transparent !important;
+}
+
+.photo-card img,
+.memory-card img,
+.floating-photo img,
+[class*="photo-card"] img,
+[class*="memory-card"] img,
+[class*="floating-photo"] img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block !important;
+  background: transparent !important;
+}
